@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// TODO: Normalize database
+model MonitorDevice {
+  id Int @id @default(autoincrement())
+  name String
+  identifier String
+  port Int?
+  proto Proto @default(ICMP)
+  persist Boolean
+  monitor_trigger MonitorTrigger
+  monitor_start_utc Int
+  monitor_end_utc Int
+  requested_by String
+  notify String
+  comments String?
+  email_subject String
+  email_body String
+  been_notified Boolean @default(false)
+}
+
+model User {
+  username String @id
+  secret String
+}
+
+enum Proto {
+  ICMP
+  TCP
+}
+
+enum MonitorTrigger {
+  ONLINE
+  OFFLINE
+}

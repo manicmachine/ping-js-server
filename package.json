@@ -1,0 +1,45 @@
+{
+  "name": "pingjs",
+  "version": "1.0.0",
+  "description": "Ping is a client/service monitoring server written in TypeScript using Nodejs. It will notify stakeholders when specified clients (via ICMP) or services (via TCP/UDP ports) are either online or offline. ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx tsc && node ./dist/server.js",
+    "update-db": "npx prisma migrate dev --name init",
+    "lint": "npx eslint .",
+    "generate-secret": "node -e \"console.log(require('crypto').randomBytes(64).toString('hex'))\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.0.2",
+    "@eslint/js": "^9.1.1",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.7",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "eslint": "^8.57.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "globals": "^15.0.0",
+    "prisma": "^5.12.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.12.1",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/nodemailer": "^6.4.15",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "net-ping": "^1.2.4",
+    "nodemailer": "^6.9.13",
+    "ts-results-es": "^4.1.0",
+    "zod": "^3.23.4"
+  }
+}
