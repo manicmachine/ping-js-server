@@ -19,7 +19,7 @@ CREATE TABLE "MonitorDevice" (
     "notify" TEXT NOT NULL,
     "comments" TEXT,
     "email_subject" TEXT NOT NULL,
-    "email_body" TEXT NOT NULL,
+    "email_body" TEXT,
     "been_notified" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "MonitorDevice_pkey" PRIMARY KEY ("id")

@@ -14,7 +14,7 @@ datasource db {
 // TODO: Normalize database
 model MonitorDevice {
   id Int @id @default(autoincrement())
-  name String
+  name String?
   identifier String
   port Int?
   proto Proto @default(ICMP)
@@ -26,7 +26,7 @@ model MonitorDevice {
   notify String
   comments String?
   email_subject String
-  email_body String
+  email_body String?
   been_notified Boolean @default(false)
 }
 
