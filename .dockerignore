@@ -1,0 +1,14 @@
+eslint.config.mjs
+docker-compose.yml
+Dockerfile
+node_modules
+pgadmin_servers.json
+README.md
+tsconfig*
+.*env
+.env_template
+.DS_Store
+.dockerignore
+.vscode
+.gitignore
+.git

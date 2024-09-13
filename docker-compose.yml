@@ -1,0 +1,43 @@
+volumes:
+  pingjs-data:
+  pgadmin-data:
+
+configs:
+  pgadmin_server_config:
+    file: pgadmin_servers.json
+
+services:
+  database:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - pingjs-data:/var/lib/postgresql/data/
+    env_file:
+      - .postgres_env
+
+  server:
+    build: .
+    restart: always
+    ports:
+      - 8000:8000
+    depends_on:
+      - database
+    env_file:
+      - .env
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    ports:
+      - 15432:80
+    depends_on:
+      - database
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin/
+    configs:
+      - source: pgadmin_server_config
+        target: /pgadmin4/servers.json
+    env_file:
+      - .pgadmin_env
