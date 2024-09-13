@@ -13,7 +13,8 @@ app.use(express.json());
 
 // Configure routes
 app.get('/', (req, res) => {
-    return res.send('Hello world!');
+    // Return landing page
+    return res.sendStatus(404);
 });
 
 // Generate an auth token
@@ -115,6 +116,23 @@ app.post('/api/devices', auth_service.validateToken, (req, res) => {
                 }
             });
         } else {
+            // Populate convenient optional values
+            if (!result.data['name']) {
+                result.data['name'] = result.data['identifier'];
+            }
+
+            if (!result.data['notify']) {
+                result.data['notify'] = result.data['requested_by']
+            }
+
+            if (!result.data['email_subject']) {
+                result.data['email_subject'] = `${result.data.identifier} is now ${result.data.monitor_trigger}`;
+            }
+
+            if (!result.data['email_body'] && result.data['comments']) {
+                result.data['email_body'] = result.data['comments'];
+            }
+
             pendingCreation.push((result.data as unknown) as MonitorDevice);
         }
     }

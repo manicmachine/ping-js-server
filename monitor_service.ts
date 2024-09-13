@@ -9,19 +9,19 @@ import * as ping from 'net-ping';
 import dgram from 'dgram';
 
 const MonitorDeviceCreateSchema = z.object({
-    name: z.string(),
+    name: z.string().optional(),
     identifier: z.string(),
     port: z.number().optional(),
     proto: z.nativeEnum(Proto).default(Proto.ICMP),
     persist: z.boolean().default(false),
     monitor_trigger: z.nativeEnum(MonitorTrigger).default("OFFLINE"),
-    monitor_start_utc: z.number().gte(0, {message: "Notification time range must be between 0000 and 2400"}).lte(2400, {message: "Notification time range must be between 0000 and 2400"}),
-    monitor_end_utc: z.number().gte(0, {message: "Notification time range must be between 0000 and 2400"}).lte(2400, {message: "Notification time range must be between 0000 and 2400"}),
+    monitor_start_utc: z.number().gte(0, {message: "Notification time range must be between 0000 and 2400"}).lte(2400, {message: "Notification time range must be between 0000 and 2400"}).default(0),
+    monitor_end_utc: z.number().gte(0, {message: "Notification time range must be between 0000 and 2400"}).lte(2400, {message: "Notification time range must be between 0000 and 2400"}).default(2400),
     requested_by: z.string(),
-    notify: z.string(),
+    notify: z.string().optional(),
     comments: z.string().optional(),
-    email_subject: z.string(),
-    email_body: z.string()
+    email_subject: z.string().optional(),
+    email_body: z.string().optional()
 })
 const MonitorDeviceUpdateSchema = z.object({
     id: z.number(),
@@ -270,7 +270,13 @@ class MonitorService {
 
             socket.once('error', error => {
                 socket.destroy();
-                reject(`Error occured while opening TCP socket to ${address}:${port}: ${error}`)
+
+                if (error['code'] && error['code'] == 'ECONNREFUSED') {
+                    console.log(`TCP connectivity to ${address}:${port}: INACTIVE`);
+                    resolve(false);
+                } else {
+                    reject(`Error occured while opening TCP socket to ${address}:${port}: ${error}`)
+                }
             })
         })
     }
