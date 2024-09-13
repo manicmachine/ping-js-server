@@ -1,5 +1,7 @@
 node_modules
 dist
+pgadmin_servers.json
 .env
+.*_env
 .DS_Store
 .vscode
