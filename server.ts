@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express, { Express, NextFunction, Request, Response } from "express";
 import auth_service from "./auth_service";
-import monitor_service, { MonitorDevice, MonitorDeviceCreateSchema, MonitorDeviceUpdateSchema } from "./monitor_service";
+import monitor_service, { SearchDomain, MonitorDevice, MonitorDeviceCreateSchema, MonitorDeviceUpdateSchema } from "./monitor_service";
 
 // TODO: Replace console statements with a proper logging library
 
@@ -57,6 +57,42 @@ app.get('/api/devices', auth_service.validateToken, (req, res) => {
 
     monitor_service.getDevices(Object.keys(req.body).length ? req.body : undefined).then(results => {
         if (results.isOk()) {
+            res.status(200).json({"count": results.value.length, "devices": results.value});
+        } else {
+            console.error(`Failed to retrieve devices {${req.body}} for ${req.user}: ${results.error}`)
+            return res.sendStatus(500)
+        }
+    })
+})
+
+// Search for monitor devices via name
+app.get('/api/devices/search/name/:name', auth_service.validateToken, (req, res) => {
+    monitor_service.searchDevices(SearchDomain.NAME, req.params.name).then(results => {
+        if  (results.isOk())  {
+            res.status(200).json({"count": results.value.length, "devices": results.value});
+        } else {
+            console.error(`Failed to retrieve devices {${req.body}} for ${req.user}: ${results.error}`)
+            return res.sendStatus(500)
+        }
+    })
+})
+
+// Search for monitor devices via identifier
+app.get('/api/devices/search/identifier/:identifier', auth_service.validateToken, (req, res) => {
+    monitor_service.searchDevices(SearchDomain.IDENTIFIER, req.params.name).then(results => {
+        if  (results.isOk())  {
+            res.status(200).json({"count": results.value.length, "devices": results.value});
+        } else {
+            console.error(`Failed to retrieve devices {${req.body}} for ${req.user}: ${results.error}`)
+            return res.sendStatus(500)
+        }
+    })
+})
+
+// Search for monitor devices via requested_by
+app.get('/api/devices/search/requested_by/:requested_by', auth_service.validateToken, (req, res) => {
+    monitor_service.searchDevices(SearchDomain.REQUESTED_BY, req.params.name).then(results => {
+        if  (results.isOk())  {
             res.status(200).json({"count": results.value.length, "devices": results.value});
         } else {
             console.error(`Failed to retrieve devices {${req.body}} for ${req.user}: ${results.error}`)

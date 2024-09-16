@@ -3,6 +3,12 @@ import { User, MonitorDevice, PrismaClient } from "@prisma/client";
 
 export type UpdateMonitorDevice = Partial<MonitorDevice> & Pick<MonitorDevice, 'id'>;
 
+export enum SearchDomain {
+    NAME,
+    IDENTIFIER,
+    REQUESTED_BY
+}
+
 class DatabaseService {
     private saltRounds = 12;
     private db_client: PrismaClient;
@@ -47,6 +53,24 @@ class DatabaseService {
         } else {
             return this.db_client.monitorDevice.findMany({where: {id: {in: deviceIds}}});
         }
+    }
+
+    async searchMonitorDevices(searchDomain: SearchDomain, searchText: string) {
+        let searchCriteria;
+
+        switch (searchDomain) {
+            case SearchDomain.NAME:
+                searchCriteria = {name: {contains: searchText}}
+                break;
+            case SearchDomain.IDENTIFIER:
+                searchCriteria = {identifier: {contains: searchText}}
+                break;
+            case SearchDomain.REQUESTED_BY:
+                searchCriteria = {requested_by: {contains: searchText}}
+                break;
+        }
+        
+        return this.db_client.monitorDevice.findMany({where: searchCriteria})
     }
 
     async getActiveMonitorDevicesForTime(time: number) {

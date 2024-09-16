@@ -1,4 +1,4 @@
-import database_service, { UpdateMonitorDevice } from "./database_service";
+import database_service, { SearchDomain, UpdateMonitorDevice } from "./database_service";
 import notification_service from "./notification_service";
 import { MonitorDevice, MonitorTrigger, Proto } from "@prisma/client";
 import { z } from "zod";
@@ -7,6 +7,8 @@ import { isIP, Socket } from 'net';
 import { lookup } from "dns";
 import * as ping from 'net-ping';
 import dgram from 'dgram';
+
+export {SearchDomain} from "./database_service";
 
 const MonitorDeviceCreateSchema = z.object({
     name: z.string().optional(),
@@ -93,6 +95,16 @@ class MonitorService {
                 return Ok(results)
             })
             .catch(error => {
+                return Err(error as string)
+            })
+    }
+
+    searchDevices(searchDomain: SearchDomain, searchText: string): Promise<Result<MonitorDevice[], string>> {
+        return database_service.searchMonitorDevices(searchDomain, searchText)
+            .then(results => {
+                return Ok(results)
+            })
+            .catch (error => {
                 return Err(error as string)
             })
     }
