@@ -122,7 +122,7 @@ app.delete('/api/devices', auth_service.validateToken, (req, res) => {
         }
     }
 
-    monitor_service.removeDevices(pendingDeletion).then(results => {
+    monitor_service.removeDevices(pendingDeletion, req.user).then(results => {
         if (results.isOk()) {
             return res.sendStatus(200);
         } else {

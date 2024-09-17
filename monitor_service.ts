@@ -69,8 +69,8 @@ class MonitorService {
             });
     }
 
-    removeDevices(deviceIds: number[]): Promise<Result<null, string>> {
-        return database_service.deleteMonitorDevices(deviceIds)
+    removeDevices(deviceIds: number[], user: string): Promise<Result<null, string>> {
+        return database_service.deleteUserMonitorDevices(deviceIds, user)
             .then(_ => {
                 return Ok(null)
             })

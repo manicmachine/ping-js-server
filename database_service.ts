@@ -43,6 +43,10 @@ class DatabaseService {
          );
     }
 
+    async deleteUserMonitorDevices(devicesIds: number[], user: string) {
+        return this.db_client.monitorDevice.deleteMany({where: {id: {in: devicesIds}, requested_by: user}});
+    }
+
     async deleteMonitorDevices(devicesIds: number[]) {
         return this.db_client.monitorDevice.deleteMany({where: {id: {in: devicesIds}}});
     }
