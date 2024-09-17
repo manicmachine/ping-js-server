@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx tsc -p ./tsconfig.dev.json && node ./dist/server.js",
     "clean-build": "rm ./dist/*; npx tsc -p ./tsconfig.json",
-    "update-db": "npx prisma migrate dev --name init",
+    "update-db": "npx prisma migrate deploy",
     "prod": "npm run update-db && node ./dist/server.js",
     "lint": "npx eslint .",
     "generate-secret": "node -e \"console.log(require('crypto').randomBytes(64).toString('hex'))\""
