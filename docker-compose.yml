@@ -26,6 +26,8 @@ services:
       - database
     env_file:
       - .env
+    cap_add:
+      - NET_RAW
 
   pgadmin:
     image: dpage/pgadmin4:latest
