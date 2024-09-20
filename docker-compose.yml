@@ -19,6 +19,7 @@ services:
 
   server:
     build: .
+    image: oliphacd/pingjs-server
     restart: always
     ports:
       - 8000:8000
