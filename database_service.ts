@@ -20,21 +20,21 @@ class DatabaseService {
     async createUser(username: string, password: string) {
         const secret = await bcrypt.hash(password, this.saltRounds);
         
-        return this.db_client.user.create({data: {username: username, secret: secret}});
+        return this.db_client.user.create({data: {username: username.toLowerCase(), secret: secret}});
     }
     
     async getUser(username: string) {
-        return this.db_client.user.findFirst({where: {username: username}});
+        return this.db_client.user.findFirst({where: {username: username.toLowerCase()}});
     }
 
     async updatePassword(username: string, password: string) {
         const secret = await bcrypt.hash(password, this.saltRounds);
 
-        return this.db_client.user.update({where: {username: username}, data: {secret: secret}});
+        return this.db_client.user.update({where: {username: username.toLowerCase()}, data: {secret: secret}});
     }
 
     async deleteUser(username: string) {
-        return this.db_client.user.delete({where: {username: username}});
+        return this.db_client.user.delete({where: {username: username.toLowerCase()}});
     }
 
     async createMonitorDevices(devices: MonitorDevice[]) {
