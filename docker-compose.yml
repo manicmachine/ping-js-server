@@ -8,7 +8,7 @@ configs:
 
 services:
   database:
-    image: postgres
+    image: postgres:17
     restart: always
     ports:
       - 5432:5432
@@ -31,7 +31,7 @@ services:
       - NET_RAW
 
   pgadmin:
-    image: dpage/pgadmin4:latest
+    image: dpage/pgadmin4:9
     restart: always
     ports:
       - 15432:80
